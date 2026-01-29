@@ -55,7 +55,7 @@ export default function AttendanceSummary() {
   // ======================
   const handleLoad = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/users/students", {
+      const res = await axios.get("https://attendance-tracker-from-biometric-device.onrender.com/users/students", {
         params: {
           course: courseName,
           dept,
@@ -104,7 +104,7 @@ export default function AttendanceSummary() {
 
       const marked_by_name = localStorage.getItem("teacherName");
 
-      await axios.post("http://localhost:3000/users/update-attendance", {
+      await axios.post("https://attendance-tracker-from-biometric-device.onrender.com/users/update-attendance", {
         updates,
         marked_by_name,
       });
