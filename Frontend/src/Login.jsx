@@ -69,7 +69,7 @@ export default function Login() {
   // 👨‍🏫 NORMAL FACULTY LOGIN
   try {
     const res = await axios.post(
-      "http://localhost:3000/users/login",
+      "https://attendance-tracker-from-biometric-device.onrender.com/users/login",
       formData,
       { withCredentials: true }
     );
