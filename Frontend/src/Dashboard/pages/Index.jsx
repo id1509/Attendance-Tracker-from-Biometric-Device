@@ -52,7 +52,7 @@ const Index = () => {
 
       try {
         const res = await axios.get(
-          "http://localhost:3000/users/attendance-summary",
+          "https://attendance-tracker-from-biometric-device.onrender.com/users/attendance-summary",
           {
             params: {
               course: filters.courseName,
