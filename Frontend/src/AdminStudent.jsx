@@ -11,7 +11,7 @@ import {
   Phone,
 } from "lucide-react";
 
-const API = "http://localhost:3000/users/admin/students";
+const API = "https://attendance-tracker-from-biometric-device.onrender.com/users/admin/students";
 
 const BUTTON_BASE =
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0";
