@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-
+require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const userRouter = require("./routes/userRouter");
@@ -8,7 +8,7 @@ const db = require("./config/mongooseConnection");
 
 const flash = require("connect-flash");
 const cors = require("cors");
-require("dotenv").config();
+
 
 // Import Supabase client
 const supabase = require("./supabaseClient");
