@@ -48,7 +48,7 @@ const StudentDashboard = () => {
       setLoading(true);
       setError(null);
       try {
-        const res = await axios.get("http://localhost:3000/users/dashboard", {
+        const res = await axios.get("https://attendance-tracker-from-biometric-device.onrender.com/users/dashboard", {
           params: {
             course: filters.courseName,
             dept: filters.dept,
