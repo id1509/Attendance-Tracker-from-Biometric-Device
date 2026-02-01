@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const fs = require("fs");
 const csv = require("csv-parser");
+const { Readable } = require("stream");
 const { registerUser, loginUser, logout } = require("../controllers/authController");
 
 // Supabase Client
@@ -37,7 +38,7 @@ router.post("/add-course", async (req, res) => {
 // 🔥 IMPORTANT FIXED VERSION — GET STUDENTS + FINAL STATUS
 // =====================================================
 const getTodayDate = () => new Date().toISOString().split("T")[0];
-const CSV_PATH = "D:/Users/Dutta/Documents/Project/Basic Attendance/Fingerprint_scans2.csv";
+
 
 // ==========================================
 // 2. GET ROUTE: Load Students
@@ -56,8 +57,19 @@ router.get("/students", async (req, res) => {
 
     const csvRows = [];
 
+    // 🔽 Download CSV from Supabase Storage
+    const { data, error } = await supabase.storage
+      .from("biometric-records") // bucket name
+      .download("Fingerprint_scans2.csv"); // file name
+
+    if (error) throw error;
+
+    // 🔽 Convert Blob → Buffer
+    const buffer = Buffer.from(await data.arrayBuffer());
+
+    // 🔽 Parse CSV
     await new Promise((resolve, reject) => {
-      fs.createReadStream(CSV_PATH)
+      Readable.from(buffer)
         .pipe(csv())
         .on("data", (row) => {
           csvRows.push({
@@ -764,6 +776,4 @@ router.delete("/admin/students/:enrollment_no", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
-
-
 module.exports = router;
