@@ -16,6 +16,7 @@ const supabase = require("./supabaseClient");
 // CORS
 app.use(cors({
   origin: "https://attendance-tracker-frontend-dusky.vercel.app",
+  credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
