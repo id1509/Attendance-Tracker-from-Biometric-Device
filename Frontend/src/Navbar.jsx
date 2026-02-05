@@ -75,7 +75,7 @@ export function Navbar() {
 
   const handleLogout = () => {
     localStorage.removeItem("teacherName");
-    localStorage.removeItem("admin");   // 👈 admin logout
+    localStorage.removeItem("admin");
     setIsOpen(false);
     navigate("/");
   };
@@ -138,14 +138,9 @@ export function Navbar() {
                   </Button>
                 </>
               ) : (
-                <>
-                  <ButtonLink to="/login" variant="glass" size="sm">
-                    Login
-                  </ButtonLink>
-                  <ButtonLink to="/signup" variant="hero" size="sm">
-                    Sign Up
-                  </ButtonLink>
-                </>
+                <ButtonLink to="/login" variant="glass" size="sm">
+                  Login
+                </ButtonLink>
               )}
             </div>
 
@@ -193,7 +188,7 @@ export function Navbar() {
                     {isLoggedIn ? (
                       <>
                         <div className="w-full px-4 py-3 rounded-lg text-sm font-medium bg-secondary/30 border border-border text-foreground">
-                          {teacherName}
+                          {isAdmin ? "Admin" : teacherName}
                         </div>
 
                         <Button
@@ -205,26 +200,15 @@ export function Navbar() {
                         </Button>
                       </>
                     ) : (
-                      <>
-                        <ButtonLink
-                          to="/login"
-                          variant="glass"
-                          size="sm"
-                          className="w-full"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          Login
-                        </ButtonLink>
-                        <ButtonLink
-                          to="/signup"
-                          variant="hero"
-                          size="sm"
-                          className="w-full"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          Sign Up
-                        </ButtonLink>
-                      </>
+                      <ButtonLink
+                        to="/login"
+                        variant="glass"
+                        size="sm"
+                        className="w-full"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        Login
+                      </ButtonLink>
                     )}
                   </div>
                 </div>
