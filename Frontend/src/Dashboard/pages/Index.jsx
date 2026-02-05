@@ -1,17 +1,25 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import axios from "axios";
+import {
+  Users,
+  UserCheck,
+  UserX,
+  Percent,
+  GraduationCap,
+} from "lucide-react";
+
 import { StatCard } from "../components/dashboard/StatCard";
 import { StudentTable } from "../components/dashboard/StudentTable";
 import { AttendancePieChart } from "../components/dashboard/AttendancePieChart";
 import { AttendanceLineChart } from "../components/dashboard/AttendanceLineChart";
-import { Users, UserCheck, UserX, Percent, GraduationCap } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
-import axios from "axios";
 
 const Index = () => {
   const location = useLocation();
 
   const [filters, setFilters] = useState(() => {
     if (location.state) return location.state;
+
     try {
       const raw = sessionStorage.getItem("dashboardFilters");
       return raw ? JSON.parse(raw) : null;
@@ -23,12 +31,18 @@ const Index = () => {
   useEffect(() => {
     if (location.state) {
       setFilters(location.state);
-      sessionStorage.setItem("dashboardFilters", JSON.stringify(location.state));
+      sessionStorage.setItem(
+        "dashboardFilters",
+        JSON.stringify(location.state)
+      );
     }
   }, [location.state]);
 
   const hasFilters = Boolean(
-    filters?.courseName && filters?.dept && filters?.year && filters?.section
+    filters?.courseName &&
+      filters?.dept &&
+      filters?.year &&
+      filters?.section
   );
 
   const [loading, setLoading] = useState(false);
@@ -39,6 +53,7 @@ const Index = () => {
     totalPresent: 0,
     totalAbsent: 0,
     avgAttendance: 0,
+    maxDaysPresent: 0,
   });
 
   const [students, setStudents] = useState([]);
@@ -52,7 +67,7 @@ const Index = () => {
 
       try {
         const res = await axios.get(
-          "http://localhost:3000/users/attendance-summary",
+          "https://attendance-tracker-from-biometric-device.onrender.com/users/attendance-summary",
           {
             params: {
               course: filters.courseName,
@@ -66,12 +81,15 @@ const Index = () => {
         setMetrics(res.data.summary);
         setStudents(res.data.students);
       } catch (err) {
-        setError(err?.response?.data?.error || "Failed to load attendance");
+        setError(
+          err?.response?.data?.error || "Failed to load attendance"
+        );
         setMetrics({
           totalStudents: 0,
           totalPresent: 0,
           totalAbsent: 0,
           avgAttendance: 0,
+          maxDaysPresent: 0,
         });
         setStudents([]);
       } finally {
@@ -89,18 +107,24 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Header */}
       <header className="border-b border-border bg-card/50">
         <div className="container mx-auto px-4 py-4 flex items-center gap-3">
           <div className="rounded-xl bg-primary p-2.5">
             <GraduationCap className="h-6 w-6 text-primary-foreground" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold">Class Attendance Dashboard</h1>
-            <p className="text-sm text-muted-foreground">{subtitle}</p>
+            <h1 className="text-2xl font-bold">
+              Class Attendance Dashboard
+            </h1>
+            <p className="text-sm text-muted-foreground">
+              {subtitle}
+            </p>
           </div>
         </div>
       </header>
 
+      {/* Main */}
       <main className="container mx-auto px-4 py-8 pt-32">
         {!hasFilters ? (
           <div className="rounded-xl border p-6">
@@ -117,7 +141,8 @@ const Index = () => {
               </div>
             )}
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            {/* Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 <StatCard
                   title="Total Students"
                   value={loading ? "…" : metrics.totalStudents}
@@ -135,11 +160,13 @@ const Index = () => {
                 />
               </div>
 
+            {/* Charts */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
               <AttendancePieChart students={students} />
               <AttendanceLineChart students={students} />
             </div>
 
+            {/* Table */}
             <StudentTable students={students} />
           </>
         )}
