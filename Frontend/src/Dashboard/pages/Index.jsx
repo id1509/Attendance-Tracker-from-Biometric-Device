@@ -52,7 +52,7 @@ const Index = () => {
 
       try {
         const res = await axios.get(
-          "https://attendance-tracker-from-biometric-device.onrender.com/users/attendance-summary",
+          "http://localhost:3000/users/attendance-summary",
           {
             params: {
               course: filters.courseName,
@@ -117,28 +117,23 @@ const Index = () => {
               </div>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              <StatCard
-                title="Total Students"
-                value={loading ? "…" : metrics.totalStudents}
-                icon={Users}
-              />
-              <StatCard
-                title="Total Present Days"
-                value={loading ? "…" : metrics.totalPresent}
-                icon={UserCheck}
-              />
-              <StatCard
-                title="Total Class Days"
-                value={loading ? "…" : metrics.maxDaysPresent}
-                icon={UserX}
-              />
-              <StatCard
-                title="Average Attendance"
-                value={loading ? "…" : `${metrics.avgAttendance}%`}
-                icon={Percent}
-              />
-            </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <StatCard
+                  title="Total Students"
+                  value={loading ? "…" : metrics.totalStudents}
+                  icon={Users}
+                />
+                <StatCard
+                  title="Total Class Days"
+                  value={loading ? "…" : metrics.maxDaysPresent}
+                  icon={UserX}
+                />
+                <StatCard
+                  title="Average Attendance"
+                  value={loading ? "…" : `${metrics.avgAttendance}%`}
+                  icon={Percent}
+                />
+              </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
               <AttendancePieChart students={students} />
